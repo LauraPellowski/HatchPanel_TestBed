@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "env.h"
+//#include "env.h"
 #include "Robot.h"
 
 #include <iostream>
@@ -70,7 +70,7 @@ void Robot::RobotInit() {
   frc::Shuffleboard::GetTab("Sensors").Add("Rear right drive", rr_encoder.GetPosition());
   frc::Shuffleboard::GetTab("Sensors").Add("Gyro Angle", gyro.GetAngle());
   frc::Shuffleboard::GetTab("Sensors").Add("Hinge Voltage", hingeSensor.GetVoltage());
-  frc::Shuffleboard::GetTab("Main").Add("Code Version: ", ROBOT_VERSION_STRING);
+  //frc::Shuffleboard::GetTab("Main").Add("Code Version: ", ROBOT_VERSION_STRING);
   frc::Shuffleboard::GetTab("Main").Add("Light", 0);//.GetEntry();
   //frontRight.SetInverted(true);
   //rearRight.SetInverted(true);
@@ -190,15 +190,30 @@ void Robot::TeleopPeriodic() {
     }*/
 
     //triggers (lift motor)
-      if (m_Xbox.GetRawAxis(2)>DEADBAND) {
-   liftMotor.Set(ControlMode::PercentOutput, m_Xbox.GetRawAxis(2));
+  if (m_Xbox.GetRawAxis(2)>DEADBAND) {
+   liftMotorL.Set(ControlMode::PercentOutput, m_Xbox.GetRawAxis(2));
+   liftMotorR.Set(ControlMode::PercentOutput, m_Xbox.GetRawAxis(2));
+   liftMotorF.Set(ControlMode::PercentOutput, -m_Xbox.GetRawAxis(2));
   }
   else if (m_Xbox.GetRawAxis(3)>DEADBAND) {
-     liftMotor.Set(ControlMode::PercentOutput, -m_Xbox.GetRawAxis(3));
+     liftMotorL.Set(ControlMode::PercentOutput, -m_Xbox.GetRawAxis(3));
+     liftMotorR.Set(ControlMode::PercentOutput, -m_Xbox.GetRawAxis(3));
+     liftMotorF.Set(ControlMode::PercentOutput, m_Xbox.GetRawAxis(3));
     }
   else {
-     liftMotor.Set(ControlMode::PercentOutput, 0.0);
+     liftMotorL.Set(ControlMode::PercentOutput, 0.0);
+     liftMotorR.Set(ControlMode::PercentOutput, 0.0);
+     liftMotorF.Set(ControlMode::PercentOutput, 0.0);
     }
+
+
+  //dont know where to put negative
+  if (m_Xbox.GetRawAxis(5)>DEADBAND || m_Xbox.GetRawAxis(5)<-DEADBAND) {
+    driveMotor.Set(ControlMode::PercentOutput, -m_Xbox.GetRawAxis(5));
+  }
+  else {
+    driveMotor.Set(ControlMode::PercentOutput, 0.0);
+  }
   
   //bumpers (hinge)
   

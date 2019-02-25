@@ -50,6 +50,7 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
   frc::DoubleSolenoid hatchPanel{0,1};
   frc::XboxController m_Xbox{0};
+  frc::XboxController m_CoDriver{1};
   frc::Relay ballHatchLight{0};
 
   // Drive base motor
@@ -68,8 +69,11 @@ class Robot : public frc::TimedRobot {
 
   // Subsystem motors
   //WPI_TalonSRX ballMotor{6};
-  WPI_TalonSRX liftMotor {6};
-  WPI_TalonSRX hingeMotor{7};
+  WPI_TalonSRX liftMotorR {3};
+  WPI_TalonSRX liftMotorL {7};
+  WPI_TalonSRX liftMotorF {6};
+  WPI_TalonSRX driveMotor {2};
+  WPI_TalonSRX hingeMotor{4};
   bool hingePIDMode;
   // Subsystem encoders
   frc::MecanumDrive m_robotDrive{frontLeft, rearLeft, frontRight, rearRight};
